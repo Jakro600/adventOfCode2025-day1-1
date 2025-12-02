@@ -7,6 +7,7 @@ class Main {
     static int change;
     static int pointer = 50;
     static int passCount = 0;
+    static int[] turnResults;
 
     public static void main(String[] args) {
         String fileName = "resources/" + args[0];
@@ -16,10 +17,13 @@ class Main {
             instruction = document.readLine();
             while(instruction != null) {
                 change = parse(instruction);
-                pointer = turnPointer(pointer, change);
+                turnResults = turnPointer(pointer, change);
+                pointer = turnResults[0];
+                passCount += turnResults[1];
                 if(pointer == 0) {
                     passCount++;
                 }
+                //System.out.println("Pointer at " + pointer + " / passCount at " + passCount);
                 instruction = document.readLine();
             }
             System.out.println("The Passcode is: " + passCount);
@@ -43,16 +47,26 @@ class Main {
         return magnitude;
     }
 
-    private static int turnPointer(int pointer, int change) {
+    private static int[] turnPointer(int pointer, int change) {
+        boolean initialZero = (pointer == 0);
+
+        int passClicks = Math.abs(change / 100);
+        change = change % 100;
+
         pointer += change;
 
-        while(pointer > 99) {
+        if(pointer > 99) {
             pointer -= 100;
-        }
-        while(pointer < 0) {
+            if(pointer != 0) {
+                passClicks++;
+            }
+        } else if(pointer < 0) {
             pointer += 100;
+            if(!initialZero) {
+                passClicks++;
+            }
         }
 
-        return pointer;
+        return new int[]{pointer, passClicks};
     }
 }
