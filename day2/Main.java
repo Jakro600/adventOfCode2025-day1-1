@@ -3,14 +3,15 @@ package day2;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
-    static long answer = 0;
-
     public static void main(String[] args) {
         BufferedReader input;
-        String rangeString;
         String filename = "resources/day2/" + args[0];
+        String rangeString;
+        long answer = 0;
+        ArrayList<String> splitId = new ArrayList<>();
 
         try {
             input = new BufferedReader(new FileReader(filename));
@@ -22,18 +23,35 @@ public class Main {
         }
 
         String[] ranges = rangeString.split(",");
+
         for(String range : ranges) {
             String[] boundsString = range.split("-");
             long[] bounds = {Long.parseLong(boundsString[0]), Long.parseLong(boundsString[1])};
 
             for(long i = bounds[0]; i <= bounds[1]; i++) {
                 String id = Long.toString(i);
-                String[] splitId = {"", ""};
-                if(id.length() % 2 == 0) {
-                    splitId[0] = id.substring(0, id.length() / 2);
-                    splitId[1] = id.substring(id.length() / 2);
-                    if(splitId[0].equals(splitId[1])) {
-                        answer += i;
+
+                for(int repetitionLength = id.length() / 2; repetitionLength >= 1; repetitionLength--) {
+                    if(id.length() % repetitionLength == 0) {
+                        for(int splitIndex = 0; splitIndex <= id.length() - repetitionLength; splitIndex += repetitionLength) {
+                            splitId.add(id.substring(splitIndex, splitIndex + repetitionLength));
+                        }
+
+                        boolean invalidId = true;
+                        for(String pattern : splitId) {
+                            if(!pattern.equals(splitId.get(0))) {
+                                invalidId = false;
+                                break;
+                            }
+                        }
+
+                        if(invalidId) {
+                            answer += i;
+                            splitId.clear();
+                            break;
+                        }
+
+                        splitId.clear();
                     }
                 }
             }
