@@ -1,0 +1,14 @@
+public static void main(String[] args) {
+    BufferedReader input;
+    String inputLine;
+    String filename = "resources/day/" + args[0];
+
+    try {
+        input = new BufferedReader(new FileReader(filename));
+        inputLine = input.readLine();
+    } catch (IOException e) {
+        System.out.println("Error Reading Input File");
+        System.out.println(e.toString());
+        return;
+    }
+}

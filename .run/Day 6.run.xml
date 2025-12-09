@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Day 6" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="day6.Main" />
+    <module name="adventOfCode2025-Jake" />
+    <option name="PROGRAM_PARAMETERS" value="input.txt" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
